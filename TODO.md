@@ -8,8 +8,11 @@
 
 - [x] Login com e-mail e senha (JWT)
 - [x] Logout (invalidação de token)
-- [ ] Troca de senha pelo próprio usuário
+- [ ] Login através de código único enviado por email
 - [ ] Proteção de rotas no frontend (redirecionamento para login)
+    - ADMIN: todas as operações na tenant
+    - GESTOR: CRUD de departamentos, categorias e bens
+    - USUARIO: Apenas leitura de dados e exportação de relatório
 - [ ] Proteção de endpoints no backend (filtro de autenticação)
 - [ ] Refresh token / renovação de sessão
 
@@ -85,6 +88,13 @@
 - [ ] Resumo pré-importação (quantos registros serão criados)
 - [ ] Execução da importação em lote
 - [ ] Relatório pós-importação (sucesso / erros por linha)
+
+### 1.9 Cadastro/Edição de Usuários
+
+- [ ] Crud de usuários para Admin
+    - [ ] Permitir visualização de inativados
+- [ ] Troca de senha pelo próprio usuário
+- [ ] Recuperação de senha
 
 ---
 
