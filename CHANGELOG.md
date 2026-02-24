@@ -23,8 +23,6 @@ e o projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - [Bens](TODO.md#14-cadastro-e-gestão-de-bens-crud-completo)
     - Exclusão de Bens
     - Reverificar campos obrigatórios e ajustar lógica no backend para evitar nullpointers
-- [Relatórios](TODO.md#17-relatório-exportável-para-excel)
-    - Upload e importação de planilha Excel
 
 ---
 
