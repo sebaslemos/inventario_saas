@@ -1,0 +1,98 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SEGURANÇA – nunca versionar credenciais ou segredos
+# ─────────────────────────────────────────────────────────────────────────────
+src/main/resources/application-dev.properties
+src/main/resources/application-prod.properties
+src/main/resources/application-staging.properties
+src/main/resources/application-local.properties
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Chaves, certificados e keystores
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+*.truststore
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JAVA / MAVEN – artefatos de build
+# ─────────────────────────────────────────────────────────────────────────────
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+HELP.md
+
+# ─────────────────────────────────────────────────────────────────────────────
+# FRONTEND – Node, Vite e artefatos gerados
+# ─────────────────────────────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.cache/
+
+# ─────────────────────────────────────────────────────────────────────────────
+# IDEs e editores
+# ─────────────────────────────────────────────────────────────────────────────
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+### Eclipse / STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code (configurações pessoais) ###
+.vscode/
+!.vscode/extensions.json
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SISTEMA OPERACIONAL
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LOGS E TEMPORÁRIOS
+# ─────────────────────────────────────────────────────────────────────────────
+*.log
+logs/
+*.tmp
+*.swp
+*.swo
