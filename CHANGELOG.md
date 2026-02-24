@@ -13,17 +13,17 @@ e o projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Em andamento (V1.0.0)
 
-- [Autenticação](TODO#11-autenticação):
+- [Autenticação](TODO.md#11-autenticação):
     - Proteção de rotas no frontend (redirecionamento para login por perfil)
     - Proteção de endpoints no backend (filtro de autenticação por perfil)
-- [Categorias](TODO#12-cadastro-de-categorias)
+- [Categorias](TODO.md#12-cadastro-de-categorias)
     - Validações de exclusão (apenas admin, com bens vinculados)
-- [Departamentos](TODO#13-cadastro-de-departamentos)
+- [Departamentos](TODO.md#13-cadastro-de-departamentos)
     - Validações de exclusão (apenas admin, com bens vinculados)
-- [Bens](TODO#14-cadastro-e-gestão-de-bens-crud-completo)
+- [Bens](TODO.md#14-cadastro-e-gestão-de-bens-crud-completo)
     - Exclusão de Bens
     - Reverificar campos obrigatórios e ajustar lógica no backend para evitar nullpointers
-- [Relatórios](TODO#17-relatório-exportável-para-excel)
+- [Relatórios](TODO.md#17-relatório-exportável-para-excel)
     - Upload e importação de planilha Excel
 
 ---
