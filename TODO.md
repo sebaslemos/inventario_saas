@@ -1,4 +1,8 @@
-# TODO — Plano de Implementação do Sistema de Inventário
+# Backlog — Sistema de Inventário
+
+> Backlog priorizado do projeto. Itens no topo de cada fase têm maior prioridade.
+> Cada item deve ter critérios de aceite antes de ser iniciado.
+> Veja [docs/GUIA-DE-PROCESSO.md](docs/GUIA-DE-PROCESSO.md) para o fluxo de trabalho.
 
 ---
 
@@ -8,28 +12,67 @@
 
 - [x] Login com e-mail e senha (JWT)
 - [x] Logout (invalidação de token)
-- [ ] Login através de código único enviado por email
-- [ ] Proteção de rotas no frontend (redirecionamento para login)
-    - ADMIN: todas as operações na tenant
-    - GESTOR: CRUD de departamentos, categorias e bens
-    - USUARIO: Apenas leitura de dados e exportação de relatório
-- [ ] Proteção de endpoints no backend (filtro de autenticação)
-- [ ] Refresh token / renovação de sessão
+- [ ] 🔴 Proteção de rotas no frontend (redirecionamento para login)
+    - Aceite:
+        - ADMIN: acessa todas as telas e operações
+        - GESTOR: acessa CRUD de departamentos, categorias e bens (sem gestão de usuários)
+        - USUARIO: apenas visualização de dados, sem botões de criar/editar/excluir
+        - Rota protegida redireciona para /login se não autenticado
+        - Rota não autorizada exibe mensagem de permissão negada
+- [ ] 🔴 Proteção de endpoints no backend (filtro de autenticação)
+    - Aceite:
+        - Endpoints de escrita retornam 403 para perfil sem permissão
+        - Endpoints de leitura acessíveis por todos os perfis autenticados
+        - Endpoint de gestão de usuários restrito a ADMIN
+        - Testes manuais cobrindo os 3 perfis
+- [ ] 🟡 Refresh token / renovação de sessão
+    - Aceite:
+        - Token renovado automaticamente quando faltam menos de 30min para expirar
+        - Renovação transparente para o usuário (sem redirecionamento para login)
+        - Token expirado redireciona para login com mensagem
+- [ ] 🟢 Login através de código único enviado por email
 
 ### 1.2 Cadastro de Categorias
 
 - [x] CRUD de categorias (criar, listar, editar, excluir)
 - [x] Campo de taxa de depreciação (%) por categoria
-- [ ] Validação: impedir exclusão de categoria com bens vinculados (sugerir movimentação antes)
-- [ ] Validação: cadastro de item com mesmo nome de um já excluído (confirmar com usuário a reativação)
-- [ ] Paginação e busca por nome na listagem
+- [ ] 🔴 Validação: Apenas admin pode realizar exclusão
+    - Aceite:
+        - Validação no backend para impedir acesso a rota de exclusão
+        - No frontend, não exibir ícones de deleção
+- [ ] 🔴 Validação: impedir exclusão de categoria com bens vinculados (sugerir movimentação antes)
+    - Aceite:
+        - Ao tentar excluir categoria com bens, exibe modal com lista dos bens vinculados
+        - Modal sugere mover os bens para outra categoria antes de excluir
+        - Exclusão só é permitida quando não há bens vinculados
+        - Bens dado BAIXA não impedem exclusão
+- [ ] 🟡 Validação: cadastro de item com mesmo nome de um já excluído (confirmar com usuário a reativação)
+    - Aceite:
+        - Ao cadastrar nome duplicado de item inativo, exibe diálogo perguntando se deseja reativar
+        - Se confirmar, reativa o item existente (mantendo histórico)
+        - Se recusar, exibe mensagem de erro de nome duplicado
+- [ ] 🟡 Paginação e busca por nome na listagem
+    - Aceite:
+        - Listagem paginada com 10 itens por página
+        - Campo de busca com debounce (300ms) filtrando por nome
+        - Indicador de total de resultados
 
 ### 1.3 Cadastro de Departamentos
 
 - [x] CRUD de departamentos (criar, listar, editar, excluir)
-- [ ] Validação: cadastro de departamento com mesmo nome de um já excluído (confirmar com usuário a reativação)
-- [ ] Validação: impedir exclusão de departamento com bens vinculados (sugerir movimentação antes)
-- [ ] Paginação e busca por nome na listagem
+- [ ] 🟡 Validação: cadastro de departamento com mesmo nome de um já excluído (confirmar com usuário a reativação)
+    - Aceite:
+        - Mesmo comportamento das categorias (diálogo de reativação)
+- [ ] 🔴 Validação: Apenas admin pode realizar exclusão
+    - Aceite:
+        - Validação no backend para impedir acesso a rota de exclusão
+        - No frontend, não exibir ícones de deleção
+- [ ] 🔴 Validação: impedir exclusão de departamento com bens vinculados (sugerir movimentação antes)
+    - Aceite:
+        - Mesmo comportamento das categorias (modal com bens vinculados)
+- [ ] 🟡 Paginação e busca por nome na listagem
+    - Aceite:
+        - Mesmo comportamento das categorias (paginação + busca)
 
 ### 1.4 Cadastro e Gestão de Bens (CRUD Completo)
 
@@ -43,58 +86,105 @@
     - [x] Valor atual (calculado pela depreciação)
     - [x] Estado de conservação (Bom / Regular / Trocar)
     - [x] Observações
-- [ ] Validação: cadastro de bem com mesma placa de um já excluído (confirmar com usuário a reativação)
-- [ ] Reverificar campos obrigatórios e ajustar lógica no backend para evitar nullpointers
+- [ ] 🟡 Validação: cadastro de bem com mesma placa de um já excluído
+    - Aceite:
+        - Ao cadastrar placa duplicada de bem inativo, exibe diálogo sobre item estar BAIXADO
+        - Informar também sobre solicitar ao ADMIN a recuperação do item dado BAIXA
+- [ ] 🔴 Reverificar campos obrigatórios e ajustar lógica no backend para evitar nullpointers
+    - Aceite:
+        - Campos obrigatórios validados com @NotNull/@NotBlank nas requests
+        - Frontend marca campos obrigatórios visualmente
+        - Mensagens de validação claras retornadas pela API
+        - Ajustar no banco constraints de colunas not null (ou definir valores default)
 - [x] Listar bens com paginação
 - [x] Editar bem existente
-- [ ] Excluir bem (exclusão lógica / soft delete)
+- [ ] 🔴 Excluir bem (exclusão lógica / soft delete)
+    - Aceite:
+        - Botão de excluir com diálogo de confirmação
+        - Exclusão marca ativo=false (não remove do banco)
+        - Bem excluído não aparece nas listagens padrão
+        - Registro no histórico (BemHistorico) com tipo BAIXA
+        - Apenas ADMIN
 - [x] Visualizar detalhes de um bem (drawer/modal)
 - [x] Cálculo automático de depreciação com base na categoria
-- [ ] Permitir a edição de campos calculados, mas sugerindo no cadastro o valor
+- [ ] 🟡 Gerenciamento de intens BAIXADOS
+    - Aceite
+        - Apenas para ADMIN
+        - Ver, editar e reativar itens baixados
+        - Caso pertença a uma categoria excluída, informar necessidade de movimentação para categoria válida
+- [ ] 🟢 Permitir a edição de campos calculados, mas sugerindo no cadastro o valor
+    - Aceite:
+        - Campos calculados (valor atual) preenchidos automaticamente mas editáveis
+        - Indicação visual de que o valor foi calculado vs. editado manualmente
 
 ### 1.5 Dashboard Inicial
 
 - [x] Card: total de bens cadastrados
 - [x] Card: valor patrimonial total (soma dos valores atuais)
 - [x] Card: bens em estado "Trocar e Ruim"
-- [ ] Card / Lista: próximas revisões programadas
-- [ ] Gráfico: distribuição de bens por categoria
-- [ ] Gráfico: distribuição de bens por departamento
-- [ ] Link dos cards para a página de bens com o filtro adequado
+- [ ] 🟡 Card / Lista: próximas revisões programadas
+    - Aceite:
+        - Card mostrando contagem de bens com revisão próxima (30 dias)
+        - Ao clicar, lista os bens com data de revisão ordenados por proximidade
+- [ ] 🟡 Gráfico: distribuição de bens por categoria
+    - Aceite:
+        - Gráfico de barras ou pizza com quantidade de bens por categoria
+        - Tooltip com valor total por categoria
+- [ ] 🟡 Gráfico: distribuição de bens por departamento
+    - Aceite:
+        - Mesmo estilo do gráfico de categorias
+- [ ] 🟢 Link dos cards para a página de bens com o filtro adequado
+    - Aceite:
+        - Clicar no card "Trocar/Ruim" navega para /bens?estado=TROCAR,RUIM
+        - Query params preservados na URL
 
 ### 1.6 Listagem com Filtros
 
 - [x] Filtro por categoria
 - [x] Filtro por departamento
 - [x] Filtro por estado de conservação
-- [ ] Filtro por faixa de valor
-- [ ] Filtro por período de aquisição
+- [ ] 🟢 Filtro por faixa de valor
+- [ ] 🟢 Filtro por período de aquisição
 - [x] Combinação de múltiplos filtros simultâneos
-- [ ] Limpeza de filtros (botão "Limpar")
+- [ ] 🟢 Limpeza de filtros (botão "Limpar")
 
 ### 1.7 Relatório Exportável para Excel
 
-- [ ] Gerar relatório no formato Excel (.xlsx)
-- [ ] Incluir todos os campos do bem no relatório
-- [ ] Permitir exportar resultado filtrado
-- [ ] Layout similar à aba "Relatório" da planilha original
-- [ ] Botão de download acessível na tela de listagem
+- [ ] 🔴 Gerar relatório no formato Excel (.xlsx)
+    - Aceite:
+        - Botão "Exportar" na tela de listagem de bens
+        - Exporta os resultados com filtros aplicados
+        - Colunas: placa, descrição, categoria, departamento, valor aquisição, valor atual, estado
+        - Formato .xlsx compatível com Excel e LibreOffice
+        - Layout similar à aba "Relatório" da planilha original
+        - Download automático após geração
 
 ### 1.8 Importação da Planilha Excel Existente
 
-- [ ] Upload de arquivo Excel (.xlsx / .xlsm)
-- [ ] Mapeamento das colunas da planilha para campos do sistema
-- [ ] Validação de dados antes da importação (linhas inválidas)
-- [ ] Resumo pré-importação (quantos registros serão criados)
-- [ ] Execução da importação em lote
-- [ ] Relatório pós-importação (sucesso / erros por linha)
+- [ ] 🟡 Upload e importação de planilha Excel
+    - Aceite:
+        - Upload de arquivo .xlsx / .xlsm na interface
+        - Mapeamento automático das colunas da planilha para campos do sistema
+        - Tela de pré-visualização com validação (linhas válidas vs. inválidas)
+        - Resumo pré-importação (quantos registros serão criados)
+        - Execução em lote com relatório pós-importação (sucesso/erro por linha)
 
 ### 1.9 Cadastro/Edição de Usuários
 
-- [ ] Crud de usuários para Admin
-    - [ ] Permitir visualização de inativados
-- [ ] Troca de senha pelo próprio usuário
-- [ ] Recuperação de senha
+- [ ] 🔴 CRUD de usuários para Admin
+    - Aceite:
+        - Admin pode criar, editar e desativar usuários da organização
+        - Listagem com filtro para exibir/ocultar inativos
+        - Opção de reativar usuário inativo
+- [ ] 🟡 Troca de senha pelo próprio usuário
+    - Aceite:
+        - Formulário com senha atual + nova senha + confirmação
+        - Validação de força mínima de senha
+- [ ] 🟢 Recuperação de senha
+    - Aceite:
+        - Formulário de "esqueci a senha" com campo de e-mail
+        - Envio de link de redefinição com token temporário
+        - Token expira em 1 hora
 
 ---
 
