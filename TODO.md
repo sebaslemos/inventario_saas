@@ -48,9 +48,11 @@
         - Bens dado BAIXA não impedem exclusão
 - [ ] 🟡 Validação: cadastro de item com mesmo nome de um já excluído (confirmar com usuário a reativação)
     - Aceite:
-        - Ao cadastrar nome duplicado de item inativo, exibe diálogo perguntando se deseja reativar
-        - Se confirmar, reativa o item existente (mantendo histórico)
-        - Se recusar, exibe mensagem de erro de nome duplicado
+        - Ao cadastrar nome duplicado de item inativo, exibe diálogo informando que o admin deve reativar a categoria
+- [ ] 🟡 Gestão de Categorias inativas
+    - Aceite
+        - ADMIN pode visualizar categorias inativas como filtro na tela de categorias
+        - ADMIN pode reativar categorias inativas
 - [ ] 🟡 Paginação e busca por nome na listagem
     - Aceite:
         - Listagem paginada com 10 itens por página
@@ -62,7 +64,11 @@
 - [x] CRUD de departamentos (criar, listar, editar, excluir)
 - [ ] 🟡 Validação: cadastro de departamento com mesmo nome de um já excluído (confirmar com usuário a reativação)
     - Aceite:
-        - Mesmo comportamento das categorias (diálogo de reativação)
+        - Mesmo comportamento das categorias (diálogo de informação)
+- [ ] 🟡 Gestão de Departamentos inativos
+    - Aceite
+        - ADMIN pode visualizar departamentos inativos como filtro na tela de categorias
+        - ADMIN pode reativar departamentos inativos
 - [ ] 🔴 Validação: Apenas admin pode realizar exclusão
     - Aceite:
         - Validação no backend para impedir acesso a rota de exclusão
