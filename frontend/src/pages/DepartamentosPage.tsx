@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { Plus, Pencil, X, Save, Loader2 } from "lucide-react";
 
 export function DepartamentosPage() {
-    const { canEdit } = useAuth();
+    const { canEdit, canDelete } = useAuth();
     const queryClient = useQueryClient();
 
     const [editing, setEditing] = useState<number | "new" | null>(null);
@@ -201,22 +201,24 @@ export function DepartamentosPage() {
                                                       >
                                                           <Pencil size={14} />
                                                       </button>
-                                                      <button
-                                                          onClick={() => {
-                                                              if (
-                                                                  confirm(
-                                                                      "Remover este departamento?",
+                                                      {canDelete && (
+                                                          <button
+                                                              onClick={() => {
+                                                                  if (
+                                                                      confirm(
+                                                                          "Remover este departamento?",
+                                                                      )
                                                                   )
-                                                              )
-                                                                  remove.mutate(
-                                                                      dep.id,
-                                                                  );
-                                                          }}
-                                                          className="btn-ghost btn-sm text-red-500 hover:text-red-700"
-                                                          title="Remover"
-                                                      >
-                                                          <X size={14} />
-                                                      </button>
+                                                                      remove.mutate(
+                                                                          dep.id,
+                                                                      );
+                                                              }}
+                                                              className="btn-ghost btn-sm text-red-500 hover:text-red-700"
+                                                              title="Remover"
+                                                          >
+                                                              <X size={14} />
+                                                          </button>
+                                                      )}
                                                   </div>
                                               </td>
                                           )}
