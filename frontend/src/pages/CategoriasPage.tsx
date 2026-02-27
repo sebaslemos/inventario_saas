@@ -14,7 +14,7 @@ const empty: CategoriaRequest = {
 };
 
 export function CategoriasPage() {
-    const { canEdit } = useAuth();
+    const { canEdit, canDelete } = useAuth();
     const queryClient = useQueryClient();
 
     const [editing, setEditing] = useState<number | "new" | null>(null);
@@ -160,22 +160,24 @@ export function CategoriasPage() {
                                                       >
                                                           <Pencil size={14} />
                                                       </button>
-                                                      <button
-                                                          onClick={() => {
-                                                              if (
-                                                                  confirm(
-                                                                      "Remover esta categoria?",
+                                                      {canDelete && (
+                                                          <button
+                                                              onClick={() => {
+                                                                  if (
+                                                                      confirm(
+                                                                          "Remover esta categoria?",
+                                                                      )
                                                                   )
-                                                              )
-                                                                  remove.mutate(
-                                                                      cat.id,
-                                                                  );
-                                                          }}
-                                                          className="btn-ghost btn-sm text-red-500 hover:text-red-700"
-                                                          title="Remover"
-                                                      >
-                                                          <X size={14} />
-                                                      </button>
+                                                                      remove.mutate(
+                                                                          cat.id,
+                                                                      );
+                                                              }}
+                                                              className="btn-ghost btn-sm text-red-500 hover:text-red-700"
+                                                              title="Remover"
+                                                          >
+                                                              <X size={14} />
+                                                          </button>
+                                                      )}
                                                   </div>
                                               </td>
                                           )}

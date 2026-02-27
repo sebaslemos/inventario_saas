@@ -12,9 +12,12 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-const navItems = [
+const baseItems = [
     { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
     { to: "/bens", label: "Bens", icon: Package },
+];
+
+const gestorItems = [
     { to: "/categorias", label: "Categorias", icon: Tags },
     { to: "/departamentos", label: "Departamentos", icon: Building2 },
 ];
@@ -22,11 +25,15 @@ const navItems = [
 const adminItems = [{ to: "/usuarios", label: "Usuários", icon: Users }];
 
 export function AppLayout() {
-    const { user, logout, isAdmin } = useAuth();
+    const { user, logout, isAdmin, canEdit } = useAuth();
     const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    const items = isAdmin ? [...navItems, ...adminItems] : navItems;
+    const items = [
+        ...baseItems,
+        ...(canEdit ? gestorItems : []),
+        ...(isAdmin ? adminItems : []),
+    ];
 
     function handleLogout() {
         logout();

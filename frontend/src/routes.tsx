@@ -8,6 +8,7 @@ import { BemFormPage } from "./pages/BemFormPage";
 import { CategoriasPage } from "./pages/CategoriasPage";
 import { DepartamentosPage } from "./pages/DepartamentosPage";
 import { UsuariosPage } from "./pages/UsuariosPage";
+import { AccessDeniedPage } from "./pages/AccessDeniedPage";
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
     const { token } = useAuth();
@@ -15,9 +16,17 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
 }
 
+/** Permite apenas ADMIN */
 function RequireAdmin({ children }: { children: React.ReactNode }) {
     const { isAdmin } = useAuth();
-    if (!isAdmin) return <Navigate to="/" replace />;
+    if (!isAdmin) return <AccessDeniedPage />;
+    return <>{children}</>;
+}
+
+/** Permite ADMIN e GESTOR (bloqueia USUARIO) */
+function RequireGestor({ children }: { children: React.ReactNode }) {
+    const { canEdit } = useAuth();
+    if (!canEdit) return <AccessDeniedPage />;
     return <>{children}</>;
 }
 
@@ -34,10 +43,38 @@ export function AppRoutes() {
             >
                 <Route index element={<DashboardPage />} />
                 <Route path="bens" element={<BensPage />} />
-                <Route path="bens/novo" element={<BemFormPage />} />
-                <Route path="bens/:id/editar" element={<BemFormPage />} />
-                <Route path="categorias" element={<CategoriasPage />} />
-                <Route path="departamentos" element={<DepartamentosPage />} />
+                <Route
+                    path="bens/novo"
+                    element={
+                        <RequireGestor>
+                            <BemFormPage />
+                        </RequireGestor>
+                    }
+                />
+                <Route
+                    path="bens/:id/editar"
+                    element={
+                        <RequireGestor>
+                            <BemFormPage />
+                        </RequireGestor>
+                    }
+                />
+                <Route
+                    path="categorias"
+                    element={
+                        <RequireGestor>
+                            <CategoriasPage />
+                        </RequireGestor>
+                    }
+                />
+                <Route
+                    path="departamentos"
+                    element={
+                        <RequireGestor>
+                            <DepartamentosPage />
+                        </RequireGestor>
+                    }
+                />
                 <Route
                     path="usuarios"
                     element={
