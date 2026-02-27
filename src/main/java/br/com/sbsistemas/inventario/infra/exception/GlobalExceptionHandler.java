@@ -24,9 +24,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BusinessException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
     public ErrorResponse handleBusiness(BusinessException ex) {
-        return ErrorResponse.of(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Business Error", ex.getMessage());
+        return ErrorResponse.of(HttpStatus.UNPROCESSABLE_CONTENT.value(), "Business Error", ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
