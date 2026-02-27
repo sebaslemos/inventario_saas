@@ -22,12 +22,14 @@ public class CategoriaController {
 
     @GetMapping
     @Operation(summary = "Lista categorias ativas")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
     public List<CategoriaResponse> listar() {
         return categoriaService.listarAtivas().stream().map(CategoriaResponse::from).toList();
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Busca categoria por ID")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
     public CategoriaResponse buscar(@PathVariable Long id) {
         return CategoriaResponse.from(categoriaService.buscarPorId(id));
     }
@@ -50,7 +52,7 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Desativa categoria")
-    @PreAuthorize("hasAnyRole('ADMIN','GESTOR')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void desativar(@PathVariable Long id) {
         categoriaService.desativar(id);
     }
