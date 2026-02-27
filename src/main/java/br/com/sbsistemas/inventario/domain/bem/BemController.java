@@ -78,7 +78,7 @@ public class BemController {
     @PostMapping("/{id}/baixa")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Baixa (descarta/vende) o bem")
-    @PreAuthorize("hasAnyRole('ADMIN','GESTOR')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void baixar(@PathVariable Long id, @Valid @RequestBody BaixaRequest request) {
         bemService.baixar(id, request.data(), request.motivo());
     }

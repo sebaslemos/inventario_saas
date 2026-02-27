@@ -45,6 +45,8 @@ public class SecurityConfig {
                         .permitAll()
                         .anyRequest()
                         .authenticated())
+                .exceptionHandling(e -> e.authenticationEntryPoint((reg, res, ex) -> res.sendError(401))
+                        .accessDeniedHandler((reg, res, ex) -> res.sendError(403)))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

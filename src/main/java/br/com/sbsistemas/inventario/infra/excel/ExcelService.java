@@ -1,22 +1,5 @@
 package br.com.sbsistemas.inventario.infra.excel;
 
-import br.com.sbsistemas.inventario.domain.bem.*;
-import br.com.sbsistemas.inventario.domain.categoria.Categoria;
-import br.com.sbsistemas.inventario.domain.categoria.CategoriaRepository;
-import br.com.sbsistemas.inventario.domain.departamento.Departamento;
-import br.com.sbsistemas.inventario.domain.departamento.DepartamentoRepository;
-import br.com.sbsistemas.inventario.domain.tenant.TenantRepository;
-import br.com.sbsistemas.inventario.shared.TenantContext;
-import br.com.sbsistemas.inventario.shared.util.DepreciacaoUtil;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -26,6 +9,38 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import br.com.sbsistemas.inventario.domain.bem.Bem;
+import br.com.sbsistemas.inventario.domain.bem.BemHistorico;
+import br.com.sbsistemas.inventario.domain.bem.BemHistoricoRepository;
+import br.com.sbsistemas.inventario.domain.bem.BemRepository;
+import br.com.sbsistemas.inventario.domain.bem.BemResponse;
+import br.com.sbsistemas.inventario.domain.bem.EstadoBem;
+import br.com.sbsistemas.inventario.domain.categoria.Categoria;
+import br.com.sbsistemas.inventario.domain.categoria.CategoriaRepository;
+import br.com.sbsistemas.inventario.domain.departamento.Departamento;
+import br.com.sbsistemas.inventario.domain.departamento.DepartamentoRepository;
+import br.com.sbsistemas.inventario.domain.tenant.TenantRepository;
+import br.com.sbsistemas.inventario.shared.TenantContext;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
