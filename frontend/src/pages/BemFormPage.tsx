@@ -88,6 +88,7 @@ export function BemFormPage() {
             isEditing ? api.put(`/bens/${id}`, data) : api.post("/bens", data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["bens"] });
+            queryClient.invalidateQueries({ queryKey: ["bem", Number(id)] });
             navigate("/bens");
         },
         onError: (err: any) => {
