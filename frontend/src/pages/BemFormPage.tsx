@@ -88,6 +88,7 @@ export function BemFormPage() {
             isEditing ? api.put(`/bens/${id}`, data) : api.post("/bens", data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["bens"] });
+            queryClient.invalidateQueries({ queryKey: ["bem", Number(id)] });
             navigate("/bens");
         },
         onError: (err: any) => {
@@ -109,8 +110,51 @@ export function BemFormPage() {
         });
     };
 
+    const validate = (): Record<string, string> => {
+        const errors: Record<string, string> = {};
+
+        if (!form.placa.trim()) errors.placa = "Placa é obrigatória";
+        else if (form.placa.length > 30) errors.placa = "Máximo 30 caracteres";
+
+        if (!form.categoriaId) errors.categoriaId = "Categoria é obrigatória";
+
+        if (!form.descricao.trim())
+            errors.descricao = "Descrição é obrigatória";
+        else if (form.descricao.length > 255)
+            errors.descricao = "Máximo 255 caracteres";
+
+        if (!form.valorAquisicao || form.valorAquisicao < 0.01)
+            errors.valorAquisicao = "Valor deve ser no mínimo R$ 0,01";
+
+        if (!form.dataCompra)
+            errors.dataCompra = "Data de compra é obrigatória";
+
+        if (!form.departamentoId)
+            errors.departamentoId = "Departamento é obrigatório";
+
+        if (!form.estado) errors.estado = "Estado é obrigatório";
+
+        if (form.responsavel && form.responsavel.length > 150)
+            errors.responsavel = "Máximo 150 caracteres";
+        if (form.fornecedor && form.fornecedor.length > 150)
+            errors.fornecedor = "Máximo 150 caracteres";
+        if (form.numeroSerie && form.numeroSerie.length > 100)
+            errors.numeroSerie = "Máximo 100 caracteres";
+        if (form.numeroNf && form.numeroNf.length > 50)
+            errors.numeroNf = "Máximo 50 caracteres";
+        if (form.descricaoLocal && form.descricaoLocal.length > 255)
+            errors.descricaoLocal = "Máximo 255 caracteres";
+
+        return errors;
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        const errors = validate();
+        if (Object.keys(errors).length > 0) {
+            setFieldErrors(errors);
+            return;
+        }
         setFieldErrors({});
         mutation.mutate(form);
     };
@@ -178,7 +222,7 @@ export function BemFormPage() {
                             placeholder="Selecione…"
                         />
                         <InputField
-                            label="Responsável *"
+                            label="Responsável"
                             value={form.responsavel}
                             onChange={(v) => set("responsavel", v)}
                             error={fieldErrors["responsavel"]}

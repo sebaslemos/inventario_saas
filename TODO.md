@@ -12,14 +12,14 @@
 
 - [x] Login com e-mail e senha (JWT)
 - [x] Logout (invalidação de token)
-- [ ] 🔴 Proteção de rotas no frontend (redirecionamento para login)
+- [x] 🔴 Proteção de rotas no frontend (redirecionamento para login)
     - Aceite:
         - ADMIN: acessa todas as telas e operações
         - GESTOR: acessa CRUD de departamentos, categorias e bens (sem gestão de usuários)
         - USUARIO: apenas visualização de dados, sem botões de criar/editar/excluir
         - Rota protegida redireciona para /login se não autenticado
         - Rota não autorizada exibe mensagem de permissão negada
-- [ ] 🔴 Proteção de endpoints no backend (filtro de autenticação)
+- [x] 🔴 Proteção de endpoints no backend (filtro de autenticação)
     - Aceite:
         - Endpoints de escrita retornam 403 para perfil sem permissão
         - Endpoints de leitura acessíveis por todos os perfis autenticados

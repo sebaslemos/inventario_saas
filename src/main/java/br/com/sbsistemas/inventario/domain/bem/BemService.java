@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -107,7 +108,7 @@ public class BemService {
                 .orElseThrow(() -> new NotFoundException("Departamento", request.departamentoId()));
 
         // ── Detecta o que mudou ANTES de aplicar as alterações ──────────────
-        boolean houveTranferencia = !bem.getDepartamento().getId().equals(departamento.getId());
+        boolean houveTransferencia = !bem.getDepartamento().getId().equals(departamento.getId());
         String departamentoAnterior = bem.getDepartamento().getNome();
 
         List<String> camposAlterados = detectarCamposAlterados(bem, request, categoria);
@@ -134,7 +135,7 @@ public class BemService {
 
         // ── Registra eventos de forma independente ───────────────────────────
         // Ambos podem ocorrer na mesma operação — são eventos distintos no histórico
-        if (houveTranferencia) {
+        if (houveTransferencia) {
             registrarHistorico(bem,
                     BemHistorico.TipoEvento.TRANSFERENCIA,
                     "Bem transferido de '%s' para '%s'.".formatted(departamentoAnterior, departamento.getNome()));
@@ -163,23 +164,23 @@ public class BemService {
             alterados.add("descrição");
         if (bem.getValorAquisicao().compareTo(request.valorAquisicao()) != 0)
             alterados.add("valor de aquisição");
-        if (!java.util.Objects.equals(bem.getFornecedor(), request.fornecedor()))
+        if (!Objects.equals(bem.getFornecedor(), request.fornecedor()))
             alterados.add("fornecedor");
-        if (!java.util.Objects.equals(bem.getNumeroSerie(), request.numeroSerie()))
+        if (!Objects.equals(bem.getNumeroSerie(), request.numeroSerie()))
             alterados.add("número de série");
-        if (!java.util.Objects.equals(bem.getNumeroNf(), request.numeroNf()))
+        if (!Objects.equals(bem.getNumeroNf(), request.numeroNf()))
             alterados.add("nota fiscal");
         if (!bem.getDataCompra().equals(request.dataCompra()))
             alterados.add("data de compra");
-        if (!java.util.Objects.equals(bem.getDescricaoLocal(), request.descricaoLocal()))
+        if (!Objects.equals(bem.getDescricaoLocal(), request.descricaoLocal()))
             alterados.add("descrição do local");
-        if (!bem.getResponsavel().equals(request.responsavel()))
+        if (!Objects.equals(bem.getResponsavel(), request.responsavel()))
             alterados.add("responsável");
         if (bem.getEstado() != request.estado())
             alterados.add("estado");
-        if (!java.util.Objects.equals(bem.getUltimaRevisao(), request.ultimaRevisao()))
+        if (!Objects.equals(bem.getUltimaRevisao(), request.ultimaRevisao()))
             alterados.add("última revisão");
-        if (!java.util.Objects.equals(bem.getObservacoes(), request.observacoes()))
+        if (!Objects.equals(bem.getObservacoes(), request.observacoes()))
             alterados.add("observações");
 
         return alterados;
