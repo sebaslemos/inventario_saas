@@ -108,7 +108,7 @@ public class BemService {
                 .orElseThrow(() -> new NotFoundException("Departamento", request.departamentoId()));
 
         // ── Detecta o que mudou ANTES de aplicar as alterações ──────────────
-        boolean houveTranferencia = !bem.getDepartamento().getId().equals(departamento.getId());
+        boolean houveTransferencia = !bem.getDepartamento().getId().equals(departamento.getId());
         String departamentoAnterior = bem.getDepartamento().getNome();
 
         List<String> camposAlterados = detectarCamposAlterados(bem, request, categoria);
@@ -135,7 +135,7 @@ public class BemService {
 
         // ── Registra eventos de forma independente ───────────────────────────
         // Ambos podem ocorrer na mesma operação — são eventos distintos no histórico
-        if (houveTranferencia) {
+        if (houveTransferencia) {
             registrarHistorico(bem,
                     BemHistorico.TipoEvento.TRANSFERENCIA,
                     "Bem transferido de '%s' para '%s'.".formatted(departamentoAnterior, departamento.getNome()));
@@ -174,7 +174,7 @@ public class BemService {
             alterados.add("data de compra");
         if (!Objects.equals(bem.getDescricaoLocal(), request.descricaoLocal()))
             alterados.add("descrição do local");
-        if (!!Objects.equals(bem.getResponsavel(), request.responsavel()))
+        if (!Objects.equals(bem.getResponsavel(), request.responsavel()))
             alterados.add("responsável");
         if (bem.getEstado() != request.estado())
             alterados.add("estado");
