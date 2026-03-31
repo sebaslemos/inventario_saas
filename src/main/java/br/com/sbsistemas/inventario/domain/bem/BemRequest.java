@@ -18,35 +18,35 @@ import java.time.LocalDate;
 @Schema(description = "Dados do bem (ativo imobilizado)")
 public record BemRequest(
 
-                // ── Obrigatórios ─────────────────────────────────────────────────────
+        // ── Obrigatórios ─────────────────────────────────────────────────────
 
-                @Schema(description = "Tag patrimonial (ex: X001)", example = "X001") @NotBlank @Size(max = 30) String placa,
+        @Schema(description = "Tag patrimonial (ex: X001)", example = "X001") @NotBlank @Size(max = 30) String placa,
 
-                @Schema(description = "ID da categoria de depreciação") @NotNull Long categoriaId,
+        @Schema(description = "ID da categoria de depreciação") @NotNull Long categoriaId,
 
-                @Schema(description = "Descrição do bem", example = "Notebook Dell Inspiron") @NotBlank @Size(max = 255) String descricao,
+        @Schema(description = "Descrição do bem", example = "Notebook Dell Inspiron") @NotBlank @Size(max = 255) String descricao,
 
-                @Schema(description = "Valor pago na aquisição", example = "2500.00") @NotNull @DecimalMin("0.01") BigDecimal valorAquisicao,
+        @Schema(description = "Valor pago na aquisição", example = "2500.00") @NotNull @DecimalMin("0.01") BigDecimal valorAquisicao,
 
-                @Schema(description = "Data da compra / nota fiscal") @NotNull LocalDate dataCompra,
+        @Schema(description = "Data da compra / nota fiscal") @NotNull LocalDate dataCompra,
 
-                @Schema(description = "ID do departamento onde o bem está alocado") @NotNull Long departamentoId,
+        @Schema(description = "ID do departamento onde o bem está alocado") @NotNull Long departamentoId,
 
-                @Schema(description = "Pessoa responsável pela guarda do bem", example = "Carlos Silva") @NotBlank @Size(max = 150) String responsavel,
+        @Schema(description = "Estado de conservação do bem") @NotNull EstadoBem estado,
 
-                @Schema(description = "Estado de conservação do bem") @NotNull EstadoBem estado,
+        // ── Opcionais ─────────────────────────────────────────────────────────
 
-                // ── Opcionais ─────────────────────────────────────────────────────────
+        @Schema(description = "Pessoa responsável pela guarda do bem (opcional)", example = "Carlos Silva") @Size(max = 150) String responsavel,
 
-                @Schema(description = "Nome do fornecedor (opcional)", example = "DELL Brasil") @Size(max = 150) String fornecedor,
+        @Schema(description = "Nome do fornecedor (opcional)", example = "DELL Brasil") @Size(max = 150) String fornecedor,
 
-                @Schema(description = "Número de série do fabricante (opcional)") @Size(max = 100) String numeroSerie,
+        @Schema(description = "Número de série do fabricante (opcional)") @Size(max = 100) String numeroSerie,
 
-                @Schema(description = "Número da nota fiscal de compra (opcional)") @Size(max = 50) String numeroNf,
+        @Schema(description = "Número da nota fiscal de compra (opcional)") @Size(max = 50) String numeroNf,
 
-                @Schema(description = "Localização física detalhada (opcional)", example = "Sala 02 — Mesa 4") @Size(max = 255) String descricaoLocal,
+        @Schema(description = "Localização física detalhada (opcional)", example = "Sala 02 — Mesa 4") @Size(max = 255) String descricaoLocal,
 
-                @Schema(description = "Data da última revisão/manutenção realizada (opcional)") LocalDate ultimaRevisao,
+        @Schema(description = "Data da última revisão/manutenção realizada (opcional)") LocalDate ultimaRevisao,
 
-                @Schema(description = "Observações livres sobre o bem (opcional)") String observacoes) {
+        @Schema(description = "Observações livres sobre o bem (opcional)") String observacoes) {
 }
